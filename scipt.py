@@ -4,8 +4,8 @@ LR = 0.001
 
 data_train = CSVDataset('data/train.csv')
 data_train_loader = data.DataLoader(data_train, shuffle=True, batch_size=16)
-# data_test = CSVDataset('data/test.csv')
-# data_test_loader = data.DataLoader(data_test, shuffle=True, batch_size=1)
+data_test = CSVDataset('data/test.csv')
+data_test_loader = data.DataLoader(data_test, shuffle=True, batch_size=1)
 
 import pandas as pd
 import hyperparameters as hyp
