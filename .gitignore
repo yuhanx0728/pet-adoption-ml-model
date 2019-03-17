@@ -1,2 +1,3 @@
 *.pth
 training_*
+.DS_Store
