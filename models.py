@@ -20,14 +20,14 @@ class Model(nn.Module):
         self.HIDDEN = HIDDEN
         if ONE_HOT:
             if DATA_AUG:
-                initial = 664
+                initial = 666
             else:
-                initial = 753
+                initial = 754
         else:
             if DATA_AUG:
-                initial = 655
+                initial = 657
             else:
-                initial = 744
+                initial = 747
         self.base_model = nn.Sequential(nn.Linear(initial, self.HIDDEN[0]),
                                         nn.ReLU(),
                                         nn.Linear(self.HIDDEN[0], self.HIDDEN[1]))
