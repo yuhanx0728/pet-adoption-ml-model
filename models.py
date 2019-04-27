@@ -15,19 +15,26 @@ class CSVDataset(data.Dataset):
 
 
 class Model(nn.Module):
-    def __init__(self, HIDDEN, ONE_HOT, DATA_AUG):
+    def __init__(self, HIDDEN, ONE_HOT, DATA_AUG, SENTI_ON):
         super().__init__()
         self.HIDDEN = HIDDEN
-        if ONE_HOT:
-            if DATA_AUG:
-                initial = 666
-            else:
-                initial = 754
+        if ONE_HOT and DATA_AUG and SENTI_ON:
+            initial = 665
+        elif ONE_HOT and (not DATA_AUG) and SENTI_ON:
+            initial = 754
+        elif (not ONE_HOT) and DATA_AUG and SENTI_ON:
+            initial = 658
+        elif (not ONE_HOT) and (not DATA_AUG) and SENTI_ON:
+            initial = 747
+        elif ONE_HOT and DATA_AUG and (not SENTI_ON):
+            initial = 664
+        elif ONE_HOT and (not DATA_AUG) and (not SENTI_ON):
+            initial = 752
+        elif (not ONE_HOT) and DATA_AUG and (not SENTI_ON):
+            initial = 655
         else:
-            if DATA_AUG:
-                initial = 657
-            else:
-                initial = 747
+            initial = 745
+            
         self.base_model = nn.Sequential(nn.Linear(initial, self.HIDDEN[0]),
                                         nn.ReLU(),
                                         nn.Linear(self.HIDDEN[0], self.HIDDEN[1]))

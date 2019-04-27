@@ -43,11 +43,12 @@ def add_sentiment_data(df):
     df['text_score'] = df['text_score'].fillna(0)
     return df
 
-def preprocess_data(ONE_HOT, DATA_AUG):
+def preprocess_data(ONE_HOT, DATA_AUG, SENTI):
     print("Data preparing...")
     df = pd.read_csv('data/train.csv')
     
-    df = add_sentiment_data(df)
+    if SENTI:
+        df = add_sentiment_data(df)
     
     df = df.drop(['Name', 'RescuerID', 'PetID', 'Description'], axis=1)
 
@@ -82,16 +83,17 @@ def preprocess_data(ONE_HOT, DATA_AUG):
     nPhotoAmt = np.column_stack((df['PhotoAmt'], df['PhotoAmt']))
     nPhotoAmt = normalize(nPhotoAmt, 0, 1)
     df['PhotoAmt'] = nPhotoAmt[:,0]
+    
+    if SENTI:
+        # df['text_mag']
+        ntext_mag = np.column_stack((df['text_mag'], df['text_mag']))
+        ntext_mag = normalize(ntext_mag, -1, 1)
+        df['text_mag'] = ntext_mag[:,0]
 
-    # df['text_mag']
-    ntext_mag = np.column_stack((df['text_mag'], df['text_mag']))
-    ntext_mag = normalize(ntext_mag, -1, 1)
-    df['text_mag'] = ntext_mag[:,0]
-
-    # df['text_score']
-    ntext_score = np.column_stack((df['text_score'], df['text_score']))
-    ntext_score = normalize(ntext_score, 0, 1)
-    df['text_score'] = ntext_score[:,0]
+        # df['text_score']
+        ntext_score = np.column_stack((df['text_score'], df['text_score']))
+        ntext_score = normalize(ntext_score, 0, 1)
+        df['text_score'] = ntext_score[:,0]
     
     if not ONE_HOT:
         nMaturitySize = np.column_stack((df['MaturitySize'], df['MaturitySize']))
@@ -170,7 +172,7 @@ def preprocess_data(ONE_HOT, DATA_AUG):
             nState[df['State'].values.astype(int)==k] = v
             nState = normalize(nState, 0, 1)
 
-    if ONE_HOT:
+    if ONE_HOT and SENTI:
         idx = d[:,8]
         nMaturitySize = torch.zeros(len(idx), int(idx.max())+1).scatter_(1, idx.view(len(idx)).long().unsqueeze(1), 1.)[:,1:]
         idx = d[:,9]
@@ -201,8 +203,7 @@ def preprocess_data(ONE_HOT, DATA_AUG):
                        d[:,21].view(-1,1), # text_score
                        d[:,19].view(-1,1) # adoptionspeed
                       ], dim=1).cuda()
-    else:
-        
+    elif (not ONE_HOT) and SENTI:
         d = torch.cat([torch.FloatTensor(nType),
                        d[:,1].view(-1,1), # Age
                        torch.FloatTensor(nBreed1),
@@ -225,7 +226,57 @@ def preprocess_data(ONE_HOT, DATA_AUG):
                        d[:,21].view(-1,1), # text_score
                        d[:,19].view(-1,1) # adoptionspeed
                       ], dim=1).cuda()
-
+    elif ONE_HOT and (not SENTI):
+        idx = d[:,8]
+        nMaturitySize = torch.zeros(len(idx), int(idx.max())+1).scatter_(1, idx.view(len(idx)).long().unsqueeze(1), 1.)[:,1:]
+        idx = d[:,9]
+        nFurLength = torch.zeros(len(idx), int(idx.max())+1).scatter_(1, idx.view(len(idx)).long().unsqueeze(1), 1.)[:,1:]
+        idx = d[:,13]
+        nHealth = torch.zeros(len(idx), int(idx.max())+1).scatter_(1, idx.view(len(idx)).long().unsqueeze(1), 1.)[:,1:]
+        
+        d = torch.cat([torch.FloatTensor(nType), # cat
+               d[:,1].view(-1,1), # Age
+               torch.FloatTensor(nBreed1), # cat
+               torch.FloatTensor(nBreed2), # cat
+               torch.FloatTensor(nGender), # cat
+               torch.FloatTensor(nColor1), # cat
+               torch.FloatTensor(nColor2), # cat
+               torch.FloatTensor(nColor3), # cat
+               torch.FloatTensor(nMaturitySize),
+               torch.FloatTensor(nFurLength),
+               torch.FloatTensor(nHealth),
+               torch.FloatTensor(nVaccinated), # cat
+               torch.FloatTensor(nDewormed), # cat
+               torch.FloatTensor(nSterilized), # cat
+               d[:,14].view(-1,1), # Quantity
+               d[:,15].view(-1,1), # Fee 
+               torch.FloatTensor(nState), # special
+               d[:,17].view(-1,1), # VideoAmt
+               d[:,18].view(-1,1), # PhotoAmt
+               d[:,19].view(-1,1) # adoptionspeed
+              ], dim=1).cuda()
+    else:
+        d = torch.cat([torch.FloatTensor(nType),
+               d[:,1].view(-1,1), # Age
+               torch.FloatTensor(nBreed1),
+               torch.FloatTensor(nBreed2),
+               torch.FloatTensor(nGender),
+               torch.FloatTensor(nColor1),
+               torch.FloatTensor(nColor2),
+               torch.FloatTensor(nColor3),
+               d[:,8:10], # MaturitySize, FurLength
+               torch.FloatTensor(nVaccinated),
+               torch.FloatTensor(nDewormed),
+               torch.FloatTensor(nSterilized),
+               d[:,13].view(-1,1), # Health
+               d[:,14].view(-1,1), # Quantity
+               d[:,15].view(-1,1), # Fee 
+               torch.FloatTensor(nState), # special
+               d[:,17].view(-1,1), # VideoAmt
+               d[:,18].view(-1,1), # PhotoAmt
+               d[:,19].view(-1,1) # adoptionspeed
+              ], dim=1).cuda()
+        
     random.shuffle(d)
     print("Data prepared.")
     return d

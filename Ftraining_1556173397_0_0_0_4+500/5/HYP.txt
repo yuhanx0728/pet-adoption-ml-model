@@ -1,0 +1,10 @@
+EPOCH = 800 
+LR = 0.0001 
+HIDDEN_LAYERS = [250, 500, 500, 250] 
+ONE_HOT = 0 
+DATA_AUG = 0 
+SENTI_ON = 0 
+NUM_FOLDS = 5/10 
+Highest accuracy of 0.6844563484191895 occured at 800...
+Minimum loss of 1.403712272644043 occured at 58... 
+Maximum QWK metric of 0.6618033647537231 occured at 782
