@@ -1,9 +1,0 @@
-EPOCH = 800 
-LR = 0.0001 
-HIDDEN_LAYERS = [250, 500, 500, 250] 
-ONE_HOT = 0 
-DATA_AUG = 0 
-SENTI_ON = 0 
-Highest avg accuracy of 0.7843676209449768 occured at 766...
-Minimum avg loss of 1.0509576797485352 occured at 6... 
-Maximum avg QWK metric of 0.7379804253578186 occured at 750
