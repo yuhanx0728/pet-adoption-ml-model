@@ -2,9 +2,11 @@
 
 I built and trained a dense neural network on 15K animal profiles, each with 23 features, to predict adoption speed with an accuracy of 86%. We hope this model can help shelters improve pet profiles for faster adoptions and provide a numeric evaluation while developing online profiles for pets. 
 
+This is a final project for the class AI for Social Good in CMU.
+
 # Additional resources on this project
-[Paper](https://drive.google.com/file/d/1vL5rwdDraDe8Hc7mhgvdrehY8HNzSUi8/view?usp=sharing)
+[A paper](https://drive.google.com/file/d/1vL5rwdDraDe8Hc7mhgvdrehY8HNzSUi8/view?usp=sharing) I wrote with my team as part of this project
 
-[Poster](https://drive.google.com/file/d/1c2xR2JVAGnnZM52Oe4K56VlEBiaotbEN/view?usp=sharing)
+[A poster](https://drive.google.com/file/d/1c2xR2JVAGnnZM52Oe4K56VlEBiaotbEN/view?usp=sharing) I made with my team as part of this project - we won the most popular  award during poster session!
 
-[Presentation](https://drive.google.com/file/d/1FbsLnD0YxUlgrlWrOYJDR8yveN-Ix4Qd/view?usp=sharing)
+[A presentation](https://drive.google.com/file/d/1FbsLnD0YxUlgrlWrOYJDR8yveN-Ix4Qd/view?usp=sharing) I had done with my team as part of this project
