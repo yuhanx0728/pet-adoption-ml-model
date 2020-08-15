@@ -1,6 +1,6 @@
 # Project description
 
-I built and trained a dense neural network(in `train_v2.ipynb`) on 15K animal profiles, each with 23 features, to predict adoption speed with an accuracy of 86%. We hope this model can help shelters improve pet profiles for faster adoptions and provide a numeric evaluation while developing online profiles for pets. 
+I built and trained a dense neural network(in `train_v3.ipynb`) on 15K animal profiles, each with 23 features, to predict adoption speed with an accuracy of 86%. We hope this model can help shelters improve pet profiles for faster adoptions and provide a numeric evaluation while developing online profiles for pets. 
 
 This is part of the final project for the class AI for Social Good in CMU.
 
